@@ -34,11 +34,12 @@
 }
 
 .modal-content {
-  background-color: white;
+  background-color: aquamarine;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   min-width: 300px;
+  font-size: larger;
 }
 
 .close {
@@ -90,4 +91,8 @@ th, td {
 
 th {
     background-color: #f4f4f4;
+}
+
+#dark-mode-icon {
+  cursor: pointer;
 }

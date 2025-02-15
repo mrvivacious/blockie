@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeModal = document.querySelector(".close");
   const saveBlockieBtn = document.getElementById("save-blockie-btn");
 
+  modal.style.display = "none";
+
   // Generate calendar rows
   for (let hour = 0; hour < 24; hour++) {
       let row = document.createElement("tr");
@@ -39,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create blockie
   saveBlockieBtn.addEventListener("click", () => {
       const label = document.getElementById("blockie-label").value.trim();
-      const color = document.getElementById("blockie-color").value;
+      const blockieColor = document.getElementById("blockie-color").value;
       const duration = parseInt(document.getElementById("blockie-duration").value, 10);
 
       if (label === "") {
@@ -49,19 +51,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const blockie = document.createElement("div");
       blockie.classList.add("blockie-item");
-      blockie.style.backgroundColor = color;
+      blockie.style.backgroundColor = blockieColor;
       blockie.innerText = label;
+      blockie.style.color = getContrastingTextColor(blockieColor);
       blockie.draggable = true;
       blockie.dataset.duration = duration;
 
       // Drag event
       blockie.addEventListener("dragstart", (e) => {
-          e.dataTransfer.setData("text/plain", JSON.stringify({ label, color, duration }));
+          e.dataTransfer.setData("text/plain", JSON.stringify({ label, color: blockieColor, duration }));
       });
 
       blockieList.appendChild(blockie);
       modal.style.display = "none";
   });
+
+  function getContrastingTextColor(hexColor) {
+    // Remove the '#' if it's there
+    if (hexColor.startsWith('#')) {
+      hexColor = hexColor.slice(1);
+    }
+    
+    // Parse the r, g, b values
+    const r = parseInt(hexColor.substr(0, 2), 16);
+    const g = parseInt(hexColor.substr(2, 2), 16);
+    const b = parseInt(hexColor.substr(4, 2), 16);
+    
+    // Calculate brightness using the YIQ formula
+    const brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    
+    // Return 'black' for bright backgrounds, 'white' for dark backgrounds.
+    return brightness >= 128 ? 'black' : 'white';
+  }
 
   // Drag & Drop functions
   function allowDrop(e) {
