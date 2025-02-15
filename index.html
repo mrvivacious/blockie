@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Calendar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Calendar -->
+        <div class="calendar-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Sunday</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th>
+                    </tr>
+                </thead>
+                <tbody id="calendar-body">
+                    <!-- Calendar rows will be generated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Side Menu -->
+        <div class="menu">
+            <h2>Blockies</h2>
+            <button id="add-blockie-btn">Add Blockie</button>
+            <div id="blockie-list"></div>
+        </div>
+    </div>
+
+    <!-- Modal for adding blockies -->
+    <div id="blockie-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create Blockie</h2>
+            <label for="blockie-label">Label:</label>
+            <input type="text" id="blockie-label">
+            
+            <label for="blockie-color">Color:</label>
+            <input type="color" id="blockie-color">
+
+            <label for="blockie-duration">Duration (hours):</label>
+            <select id="blockie-duration">
+                <!-- Options 1-24 -->
+                <script>
+                    for (let i = 1; i <= 24; i++) {
+                        document.write(`<option value="${i}">${i}</option>`);
+                    }
+                </script>
+            </select>
+
+            <button id="save-blockie-btn">Save</button>
+        </div>
+    </div>
+
+    <script src="logic.js"></script>
+</body>
+</html>

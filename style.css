@@ -1,0 +1,93 @@
+.container {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  gap: 20px; /* Space between calendar and menu */
+}
+
+.calendar-container {
+  width: 70%;
+  margin-right: auto;
+  overflow-x: auto;
+}
+
+.menu {
+  width: 25%;
+  background-color: #f8f8f8;
+  padding: 20px;
+  border: 1px solid black;
+  height: 100%;
+}
+
+/* Modal styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 300px;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#blockie-list {
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.blockie-item {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  word-wrap: break-word; /* Allows long words to wrap */
+}
+
+.calendar-blockie {
+  width: 100%;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.occupied {
+  background-color: rgba(0, 0, 0, 0.1); /* Light grey to show blocked cells */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+}
