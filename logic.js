@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let row = document.createElement("tr");
 
       let timeCell = document.createElement("td");
-      timeCell.textContent = `${hour}:00`;
+      timeCell.textContent = hour < 12 ? `${hour}:00 AM` : `${hour - 12}:00 PM`;
       row.appendChild(timeCell);
 
       for (let day = 0; day < 7; day++) {
@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const blockieDiv = document.createElement("div");
       blockieDiv.classList.add("calendar-blockie");
       blockieDiv.style.backgroundColor = data.color;
+      blockieDiv.style.color = getContrastingTextColor(data.color);
       blockieDiv.innerText = data.label;
       blockieDiv.style.height = `${duration * 50}px`;
 
