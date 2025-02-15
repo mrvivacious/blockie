@@ -49,17 +49,19 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
       }
 
+      const blockieText = `${label} | ${duration}h`;
+
       const blockie = document.createElement("div");
       blockie.classList.add("blockie-item");
       blockie.style.backgroundColor = blockieColor;
-      blockie.innerText = label;
+      blockie.innerText = blockieText;
       blockie.style.color = getContrastingTextColor(blockieColor);
       blockie.draggable = true;
       blockie.dataset.duration = duration;
 
       // Drag event
       blockie.addEventListener("dragstart", (e) => {
-          e.dataTransfer.setData("text/plain", JSON.stringify({ label, color: blockieColor, duration }));
+          e.dataTransfer.setData("text/plain", JSON.stringify({ blockieText, color: blockieColor, duration }));
       });
 
       blockieList.appendChild(blockie);
@@ -106,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
       blockieDiv.classList.add("calendar-blockie");
       blockieDiv.style.backgroundColor = data.color;
       blockieDiv.style.color = getContrastingTextColor(data.color);
-      blockieDiv.innerText = data.label;
+      blockieDiv.innerText = data.blockieText;
       blockieDiv.style.height = `${duration * 50}px`;
 
       cell.appendChild(blockieDiv);
