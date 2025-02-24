@@ -16,6 +16,8 @@
   padding: 20px;
   border: 1px solid black;
   height: 100%;
+  position: sticky;
+  top: 5px;
 }
 
 /* Modal styling */
