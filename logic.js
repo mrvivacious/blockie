@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (i === 0) {
             currentCell.innerText = blockieDiv.innerText;
+            currentCell.style.color = blockieDiv.style.color;
         }
       }
 
