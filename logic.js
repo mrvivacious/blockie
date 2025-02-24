@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const calendarBody = document.getElementById("calendar-body");
-  const blockieList = document.getElementById("blockie-list");
-  const modal = document.getElementById("blockie-modal");
-  const addBlockieBtn = document.getElementById("add-blockie-btn");
-  const closeModal = document.querySelector(".close");
-  const saveBlockieBtn = document.getElementById("save-blockie-btn");
+  let calendarBody = document.getElementById("calendar-body");
+  let blockieList = document.getElementById("blockie-list");
+  let modal = document.getElementById("blockie-modal");
+  let addBlockieBtn = document.getElementById("add-blockie-btn");
+  let closeModal = document.querySelector(".close");
+  let saveBlockieBtn = document.getElementById("save-blockie-btn");
 
   modal.style.display = "none";
 
@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
           cell.dataset.day = day;
           cell.addEventListener("dragover", allowDrop);
           cell.addEventListener("drop", dropBlockie);
+          cell.id = day + ';' + hour;
           row.appendChild(cell);
       }
 
@@ -40,18 +41,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Create blockie
   saveBlockieBtn.addEventListener("click", () => {
-      const label = document.getElementById("blockie-label").value.trim();
-      const blockieColor = document.getElementById("blockie-color").value;
-      const duration = parseInt(document.getElementById("blockie-duration").value, 10);
+      let label = document.getElementById("blockie-label").value.trim();
+      let blockieColor = document.getElementById("blockie-color").value;
+      let duration = parseInt(document.getElementById("blockie-duration").value, 10);
 
       if (label === "") {
           alert("Please enter a label!");
           return;
       }
 
-      const blockieText = `${label} | ${duration}h`;
+      let blockieText = `${label} | ${duration}h`;
 
-      const blockie = document.createElement("div");
+      let blockie = document.createElement("div");
       blockie.classList.add("blockie-item");
       blockie.style.backgroundColor = blockieColor;
       blockie.innerText = blockieText;
@@ -75,12 +76,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     // Parse the r, g, b values
-    const r = parseInt(hexColor.substr(0, 2), 16);
-    const g = parseInt(hexColor.substr(2, 2), 16);
-    const b = parseInt(hexColor.substr(4, 2), 16);
+    let r = parseInt(hexColor.substr(0, 2), 16);
+    let g = parseInt(hexColor.substr(2, 2), 16);
+    let b = parseInt(hexColor.substr(4, 2), 16);
     
     // Calculate brightness using the YIQ formula
-    const brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    let brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;
     
     // Return 'black' for bright backgrounds, 'white' for dark backgrounds.
     return brightness >= 128 ? 'black' : 'white';
@@ -93,24 +94,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function dropBlockie(e) {
       e.preventDefault();
-      const data = JSON.parse(e.dataTransfer.getData("text/plain"));
+      let data = JSON.parse(e.dataTransfer.getData("text/plain"));
 
-      const cell = e.target;
-      const duration = parseInt(data.duration, 10);
-      const startHour = parseInt(cell.dataset.hour, 10);
+      let cell = e.target;
+      console.log(cell);
+      let duration = parseInt(data.duration, 10);
+      let startHour = parseInt(cell.dataset.hour, 10);
 
       if (startHour + duration > 24) {
           alert("Blockie exceeds available hours!");
           return;
       }
 
-      const blockieDiv = document.createElement("div");
+      let blockieDiv = document.createElement("div");
       blockieDiv.classList.add("calendar-blockie");
       blockieDiv.style.backgroundColor = data.color;
       blockieDiv.style.color = getContrastingTextColor(data.color);
       blockieDiv.innerText = data.blockieText;
-      blockieDiv.style.height = `${duration * 50}px`;
+      blockieDiv.style.height = `${1 * 50}px`;
 
-      cell.appendChild(blockieDiv);
+      let day = cell.id.split(';')[0];
+      let hour = parseInt(cell.id.split(';')[1]);
+
+      for (let i = 0; i < duration; i++) {
+        let currentCellId = day + ";" + (hour + i);
+        let currentCell = document.getElementById(currentCellId);
+    
+        currentCell.style.background = blockieDiv.style.backgroundColor;
+
+        if (i === 0) {
+            currentCell.innerText = blockieDiv.innerText;
+        }
+      }
+
+    // User data in storage:
+    // 
   }
 });
