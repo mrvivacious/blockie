@@ -1,3 +1,4 @@
+/* https://stackoverflow.com/questions/468881/ */
 @media print{
   @page { 
     size: A4 landscape;
@@ -79,6 +80,10 @@
   font-weight: bold;
   text-align: center;
   word-wrap: break-word; /* Allows long words to wrap */
+  
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 .calendar-blockie {
