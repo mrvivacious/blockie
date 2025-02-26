@@ -134,3 +134,62 @@ th {
 #dark-mode-icon {
   cursor: pointer;
 }
+
+.dark body,
+.dark .container,
+.dark html {
+  background-color: #242424;
+  color: #e0e0e0;
+}
+
+.dark .menu {
+  background-color: #1e1e1e;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+.dark .delete, 
+.dark .deleteScheduled {
+  color: #ff9494;
+}
+
+.dark .delete:hover, 
+.dark .deleteScheduled:hover {
+  color: black;
+}
+
+.dark .modal-content {
+  background-color: #333;
+  color: white;
+}
+
+.dark th {
+  background-color: #222;
+}
+
+.dark .occupied {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .blockie-item {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark .calendar-blockie {
+  background-color: #444;
+  color: white;
+}
+
+.dark th,
+.dark td {
+  border: 1px solid rgb(136, 136, 136);
+  padding: 8px;
+  text-align: center;
+}
+
+/* Dark mode toggle icon effect */
+.dark #dark-mode-icon {
+  color: white;
+  /* transition: 0.3s; */
+}
