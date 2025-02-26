@@ -143,9 +143,34 @@ function addDeleteFunctionToSpan(spanElement) {
       let isDeleteSuccessful = deleteBlockieFromUserData(blockieName);
 
       if (isDeleteSuccessful) {
-        spanElement.parentElement.remove();
+        let blockieId = blockie.id;
         
-        // delete items off the calendar TODO
+        let userData = JSON.parse(getUserData());
+        let calendarData = userData.calendar;
+        if (calendarData == null || calendarData == undefined) { return; }
+
+        let calendarDataKeys = Object.keys(calendarData);
+    
+        for (let i = 0, n = calendarDataKeys.length; i < n; i++) {
+            let cellId = calendarDataKeys[i];
+            let scheduledBlockieId = calendarData[cellId];
+
+            if (blockieId === scheduledBlockieId) {
+              console.log(cellId)
+              delete calendarData[cellId];
+
+              // Remove UI
+              let cellToDelete = document.getElementById(cellId);
+              cellToDelete.innerText = '';
+              cellToDelete.style.background = '';
+            }
+
+            userData.calendar = calendarData;
+            let dataToSave = JSON.stringify(userData);
+            setUserData(dataToSave);
+        }
+
+        spanElement.parentElement.remove();
       }
     }
   });
