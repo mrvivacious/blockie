@@ -89,6 +89,21 @@ function drawBlockieOnCalendar(cellId, blockieData) {
     }
 }
 
+function removeBlockieOnCalendar(cellId, blockieId) {
+    let day = cellId.split(';')[0];
+    let hour = parseInt(cellId.split(';')[1]);
+
+    let cellsToRemove = parseInt(blockieId.split('| ')[1]);
+
+    for (let i = 0; i < cellsToRemove; i++) {
+        let cellToDeleteId = day + ";" + (hour + i);
+        let cellToDelete = document.getElementById(cellToDeleteId);
+
+        cellToDelete.innerText = '';
+        cellToDelete.style.background = '';
+    }
+}
+
 function getContrastingTextColor(hexColor) {
     let r, g, b;
 

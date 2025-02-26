@@ -160,9 +160,7 @@ function addDeleteFunctionToSpan(spanElement) {
               delete calendarData[cellId];
 
               // Remove UI
-              let cellToDelete = document.getElementById(cellId);
-              cellToDelete.innerText = '';
-              cellToDelete.style.background = '';
+              removeBlockieOnCalendar(cellId, blockieId);
             }
 
             userData.calendar = calendarData;
