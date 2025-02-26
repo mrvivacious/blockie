@@ -43,6 +43,28 @@ function saveBlockieToUserData(blockieData) {
   setUserData(dataToSave);
 }
 
+function deleteBlockieFromUserData(blockieName) {
+  let userData = JSON.parse(getUserData());
+  let savedBlockies = userData.blockies;
+
+  for (let i = 0, n = savedBlockies.length; i < n; i++) {
+    let currentBlockie = savedBlockies[i];
+    
+    if (blockieName === currentBlockie.name) {
+      savedBlockies.splice(i, 1);
+
+      userData.blockies = savedBlockies;
+      
+      let dataToSave = JSON.stringify(userData);
+      setUserData(dataToSave);
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
 // Create blockie
 saveBlockieBtn.addEventListener("click", () => {
     let label = document.getElementById("blockie-label").value.trim();
@@ -83,12 +105,52 @@ function createBlockie(blockieData) {
     blockie.draggable = true;
     blockie.dataset.duration = blockieDuration;
 
+    let span = createDeleteElement();
+    let spanWithDeleteFunction = addDeleteFunctionToSpan(span);
+
+    blockie.appendChild(spanWithDeleteFunction);
+
     // Drag event
     blockie.addEventListener("dragstart", (e) => {
         e.dataTransfer.setData("text/plain", JSON.stringify({ blockieText: blockieText, color: blockieColor, duration: blockieDuration }));
     });
 
     return blockie;
+}
+
+function createDeleteElement() {
+    let span = document.createElement("SPAN");
+    let txt = document.createTextNode("\u00D7");
+    span.className = "delete";
+    span.id = "delete";
+    span.title = "Delete blockie?";
+    span.appendChild(txt);
+
+    return span;
+}
+
+function addDeleteFunctionToSpan(spanElement) {
+  spanElement.addEventListener("click", (event) => {
+    let blockie = spanElement.parentElement;
+    let blockieLabel = blockie.innerText;
+    let blockieName = blockieLabel.split('|')[0].trim();
+
+    let userConfirmedDelete = confirm(
+      "Delete Blockie?\n\n" + blockieLabel.split('\n')[0]
+    );
+
+    if (userConfirmedDelete) {
+      let isDeleteSuccessful = deleteBlockieFromUserData(blockieName);
+
+      if (isDeleteSuccessful) {
+        spanElement.parentElement.remove();
+        
+        // delete items off the calendar TODO
+      }
+    }
+  });
+
+  return spanElement;
 }
 
 function getContrastingTextColor(hexColor) {

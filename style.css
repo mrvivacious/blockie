@@ -25,6 +25,17 @@
   overflow-x: auto;
 }
 
+.delete {
+  float: right;
+  font-size: x-large;
+  color: #ff6161;
+}
+
+.delete:hover {
+  color: white;
+  cursor: pointer;
+}
+
 .menu {
   width: 25%;
   background-color: #f8f8f8;
@@ -72,7 +83,7 @@
 }
 
 .blockie-item {
-  width: 100%;
+  width: 90%;
   padding: 10px;
   margin-bottom: 8px;
   border-radius: 5px;

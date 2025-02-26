@@ -30,6 +30,8 @@ function addBlockiesToCalendar() {
     // Load calendar from local storage
     let userData = JSON.parse(getUserData());
     let calendarData = userData.calendar;
+    if (calendarData == null || calendarData == undefined) { return; }
+
     let calendarDataKeys = Object.keys(calendarData);
 
     for (let i = 0, n = calendarDataKeys.length; i < n; i++) {
