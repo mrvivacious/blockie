@@ -85,8 +85,45 @@ function drawBlockieOnCalendar(cellId, blockieData) {
         if (i === 0) {
             currentCell.style.color = getContrastingTextColor(blockieData.color);
             currentCell.innerText = blockieData.blockieText;
+
+            let span = createScheduledItemDeleteElement();
+            let spanWithDeleteFunction = addScheduledItemDeleteFunctionToSpan(span);
+
+            currentCell.append(spanWithDeleteFunction);
         }
     }
+}
+
+function createScheduledItemDeleteElement() {
+    let span = document.createElement("SPAN");
+    let txt = document.createTextNode("\u00D7");
+    span.className = "deleteScheduled";
+    span.title = "Delete Blockie?";
+    span.appendChild(txt);
+
+    return span;
+}
+
+function addScheduledItemDeleteFunctionToSpan(spanElement) {
+    spanElement.addEventListener("click", (event) => {
+        let cell = spanElement.parentElement;
+        let cellId = cell.id;
+
+        let userData = JSON.parse(getUserData());
+        let calendarData = userData.calendar;
+        if (calendarData == null || calendarData == undefined) { return; }
+        
+        delete calendarData[cellId];
+
+        userData.calendar = calendarData;
+        let dataToSave = JSON.stringify(userData);
+        setUserData(dataToSave);
+
+        let cellLabel = cell.innerText;
+        removeBlockieOnCalendar(cellId, cellLabel);
+    });
+
+    return spanElement;
 }
 
 function removeBlockieOnCalendar(cellId, blockieId) {

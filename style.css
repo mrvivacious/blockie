@@ -31,9 +31,14 @@
   color: #ff6161;
 }
 
-.delete:hover {
+.delete:hover, .deleteScheduled:hover {
   color: white;
   cursor: pointer;
+}
+
+.deleteScheduled {
+  float: right;
+  color: #ff6161;
 }
 
 .menu {
