@@ -4,7 +4,8 @@ function getUserData() {
     console.log('no user data');
   
     let blockies_data = {
-      blockies: []
+      blockies: [],
+      calendar: {}
     };
   
     let dataToSave = JSON.stringify(blockies_data);

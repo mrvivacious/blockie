@@ -78,6 +78,7 @@ function createBlockie(blockieData) {
     blockie.classList.add("blockie-item");
     blockie.style.backgroundColor = blockieColor;
     blockie.innerText = blockieText;
+    blockie.id = blockieText;
     blockie.style.color = getContrastingTextColor(blockieColor);
     blockie.draggable = true;
     blockie.dataset.duration = blockieDuration;
@@ -91,15 +92,31 @@ function createBlockie(blockieData) {
 }
 
 function getContrastingTextColor(hexColor) {
-  // Remove the '#' if it's there
-  if (hexColor.startsWith('#')) {
-      hexColor = hexColor.slice(1);
-  }
+  let r, g, b;
 
-  // Parse the r, g, b values
-  let r = parseInt(hexColor.substr(0, 2), 16);
-  let g = parseInt(hexColor.substr(2, 2), 16);
-  let b = parseInt(hexColor.substr(4, 2), 16);
+  if (hexColor.includes('rgb(')) {
+      // Extract RGB values from the string
+      let match = hexColor.match(/\d+/g);
+      if (match && match.length === 3) {
+          [r, g, b] = match.map(Number);
+      }
+  }
+  else {
+      // Remove the '#' if it's there
+      if (hexColor.startsWith('#')) {
+          hexColor = hexColor.slice(1);
+      }
+    
+      // Expand shorthand hex (e.g., #fff → #ffffff)
+      if (hexColor.length === 3) {
+          hexColor = hexColor.split('').map(c => c + c).join('');
+      }
+
+      // Parse the r, g, b values
+      r = parseInt(hexColor.substr(0, 2), 16);
+      g = parseInt(hexColor.substr(2, 2), 16);
+      b = parseInt(hexColor.substr(4, 2), 16);
+  }
 
   // Calculate brightness using the YIQ formula
   let brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;

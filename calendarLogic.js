@@ -24,6 +24,28 @@ for (let hour = 0; hour < 24; hour++) {
     calendarBody.appendChild(row);
 }
 
+addBlockiesToCalendar();
+
+function addBlockiesToCalendar() {
+    // Load calendar from local storage
+    let userData = JSON.parse(getUserData());
+    let calendarData = userData.calendar;
+    let calendarDataKeys = Object.keys(calendarData);
+
+    for (let i = 0, n = calendarDataKeys.length; i < n; i++) {
+        let cellId = calendarDataKeys[i];
+        let blockieId = calendarData[cellId];
+        let blockieToAdd = document.getElementById(blockieId);
+        let blockieData = {
+            blockieText: blockieId,
+            color: blockieToAdd.style.backgroundColor,
+            duration: blockieToAdd.getAttribute('data-duration')
+        };
+
+        drawBlockieOnCalendar(cellId, blockieData);
+    }
+}
+
 // Drag & Drop functions
 function allowDrop(e) {
     e.preventDefault();
@@ -32,7 +54,6 @@ function allowDrop(e) {
 function dropBlockie(e) {
     e.preventDefault();
     let data = JSON.parse(e.dataTransfer.getData("text/plain"));
-
     let cell = e.target;
     console.log(cell);
     let duration = parseInt(data.duration, 10);
@@ -43,25 +64,75 @@ function dropBlockie(e) {
         return;
     }
 
-    let blockieDiv = document.createElement("div");
-    blockieDiv.classList.add("calendar-blockie");
-    blockieDiv.style.backgroundColor = data.color;
-    blockieDiv.style.color = getContrastingTextColor(data.color);
-    blockieDiv.innerText = data.blockieText;
-    blockieDiv.style.height = `${1 * 50}px`;
+    drawBlockieOnCalendar(cell.id, data);
 
-    let day = cell.id.split(';')[0];
-    let hour = parseInt(cell.id.split(';')[1]);
+    // Update the calendar in memory
+    addBlockieToCalendarInUserData(cell.id, data.blockieText);
+}
 
-    for (let i = 0; i < duration; i++) {
+function drawBlockieOnCalendar(cellId, blockieData) {
+    let day = cellId.split(';')[0];
+    let hour = parseInt(cellId.split(';')[1]);
+
+    for (let i = 0; i < blockieData.duration; i++) {
         let currentCellId = day + ";" + (hour + i);
         let currentCell = document.getElementById(currentCellId);
 
-        currentCell.style.background = blockieDiv.style.backgroundColor;
+        currentCell.style.background = blockieData.color;
 
         if (i === 0) {
-            currentCell.innerText = blockieDiv.innerText;
-            currentCell.style.color = blockieDiv.style.color;
+            currentCell.style.color = getContrastingTextColor(blockieData.color);
+            currentCell.innerText = blockieData.blockieText;
         }
     }
+}
+
+function getContrastingTextColor(hexColor) {
+    let r, g, b;
+
+    if (hexColor.includes('rgb(')) {
+        // Extract RGB values from the string
+        let match = hexColor.match(/\d+/g);
+        if (match && match.length === 3) {
+            [r, g, b] = match.map(Number);
+        }
+    }
+    else {
+        // Remove the '#' if it's there
+        if (hexColor.startsWith('#')) {
+            hexColor = hexColor.slice(1);
+        }
+      
+        // Expand shorthand hex (e.g., #fff → #ffffff)
+        if (hexColor.length === 3) {
+            hexColor = hexColor.split('').map(c => c + c).join('');
+        }
+
+        // Parse the r, g, b values
+        r = parseInt(hexColor.substr(0, 2), 16);
+        g = parseInt(hexColor.substr(2, 2), 16);
+        b = parseInt(hexColor.substr(4, 2), 16);
+    }
+
+    // Calculate brightness using the YIQ formula
+    let brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+    // Return 'black' for bright backgrounds, 'white' for dark backgrounds.
+    return brightness >= 128 ? 'black' : 'white';
+}
+
+// TODO removeBlockieFromCalendar...
+function addBlockieToCalendarInUserData(cellId, blockieId) {
+    let userData = JSON.parse(getUserData());
+    let savedCalendar = userData.calendar;
+
+    if (savedCalendar === undefined) {
+        savedCalendar = {};
+    }
+
+    savedCalendar[cellId] = blockieId;
+    userData.calendar = savedCalendar;
+
+    let dataToSave = JSON.stringify(userData);
+    setUserData(dataToSave);
 }
